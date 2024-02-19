@@ -8,7 +8,7 @@ const Header = () => {
           to={"/"}
           className="text-3xl font-bold tracking-tight text-orange-500"
         >
-          LeoMessiEats.com
+          MessiEats.com
         </Link>
       </div>
     </div>
