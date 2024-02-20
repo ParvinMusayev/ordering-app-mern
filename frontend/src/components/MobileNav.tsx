@@ -2,6 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 
+import MobileNavLinks from "./MobileNavLinks";
+
 //icons
 import { CircleUserRound, Menu } from "lucide-react";
 import {
@@ -33,7 +35,7 @@ const MobileNav = () => {
         <Separator />
         <SheetDescription className="flex flex-col gap-4">
           {isAuthenticated ? (
-            <div>auth</div>
+           <MobileNavLinks />
           ) : (
             <Button
               onClick={() => loginWithRedirect()}
