@@ -1,19 +1,26 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const myUserRoute = require("./routes/MyUserRoute");
+import express, { Request, Response } from "express";
+import "dotenv/config";
+import cors from "cors";
+import mongoose from "mongoose";
+import myUserRoute from "./routes/MyUserRoute";
+import { v2 as cloudinary } from "cloudinary";
 
-dotenv.config();
+mongoose
+  .connect(process.env.MONGODB_CONNECTION_STRING as string)
+  .then(() => console.log("Connected to database"));
 
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING).then(() => console.log("Connected to database"));
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/health", async (req, res) => {
+app.get("/health", async (req: Request, res: Response) => {
   res.send({ message: "health OK!" });
 });
 
