@@ -26,14 +26,10 @@ const createMyRestaurant = async (req: Request, res: Response) => {
         .json({ message: "User restaurant already exists" });
     }
 
-    const image = req.file as Express.Multer.File;
-    const base64Image = Buffer.from(image.buffer).toString("base64");
-    const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-
-    const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+    const imageUrl = await uploadImage(req.file as Express.Multer.File);
 
     const restaurant = new Restaurant(req.body);
-    restaurant.imageUrl = uploadResponse.url;
+    restaurant.imageUrl = imageUrl;
     restaurant.user = new mongoose.Types.ObjectId(req.userId);
     restaurant.lastUpdated = new Date();
     await restaurant.save();
