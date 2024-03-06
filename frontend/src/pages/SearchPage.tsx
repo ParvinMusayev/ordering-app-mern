@@ -22,7 +22,7 @@ const SearchPage = () => {
     // sortOption: "bestMatch",
   });
 
-  const { results, isLoading } = useSearchRestaurants(city);
+  const { results, isLoading } = useSearchRestaurants(searchState, city);
 
   const setSearchQuery = (searchFormData: SearchForm) => {
     setSearchState((prevState) => ({
