@@ -1,4 +1,5 @@
 import { useSearchRestaurants } from "@/api/RestaurantApi";
+import PaginationSelector from "@/components/PaginationSelector";
 import SearchBar, { SearchForm } from "@/components/SearchBar";
 import SearchResultCard from "@/components/SearchResultCard";
 import SearchResultInfo from "@/components/SearchResultInfo";
@@ -7,7 +8,7 @@ import { useParams } from "react-router-dom";
 
 export type SearchState = {
   searchQuery: string;
-  // page: number;
+  page: number;
   // selectedCuisines: string[];
   // sortOption: string;
 };
@@ -17,7 +18,7 @@ const SearchPage = () => {
 
   const [searchState, setSearchState] = useState<SearchState>({
     searchQuery: "",
-    // page: 1,
+    page: 1,
     // selectedCuisines: [],
     // sortOption: "bestMatch",
   });
@@ -37,6 +38,13 @@ const SearchPage = () => {
       ...prevState,
       searchQuery: "",
       page: 1,
+    }));
+  };
+
+  const setPage = (page: number) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      page,
     }));
   };
 
@@ -62,6 +70,11 @@ const SearchPage = () => {
         {results.data.map((restaurant) => (
           <SearchResultCard restaurant={restaurant} />
         ))}
+        <PaginationSelector
+          page={results.pagination.page}
+          pages={results.pagination.pages}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );
