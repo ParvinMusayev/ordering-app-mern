@@ -8,6 +8,7 @@ import { MenuItem as MenuItemType } from "../types";
 
 import { Card, CardFooter } from "@/components/ui/card";
 import OrderSummary from "@/components/OrderSummary";
+import CheckoutButton from "@/components/CheckoutButton";
 
 export type CartItem = {
   _id: string;
