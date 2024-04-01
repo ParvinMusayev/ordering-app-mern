@@ -1,6 +1,8 @@
 import { body, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 
+
+
 const handleValidationErrors = async (
   req: Request,
   res: Response,
