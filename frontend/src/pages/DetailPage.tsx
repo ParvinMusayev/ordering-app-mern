@@ -1,14 +1,14 @@
 import { useGetRestaurant } from "@/api/RestaurantApi";
-import { useParams } from "react-router-dom";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import RestaurantInfo from "@/components/RestaurantInfo";
 import MenuItem from "@/components/MenuItem";
-import { useState } from "react";
-import { MenuItem as MenuItemType } from "../types";
-
-import { Card, CardFooter } from "@/components/ui/card";
 import OrderSummary from "@/components/OrderSummary";
+import RestaurantInfo from "@/components/RestaurantInfo";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Card, CardFooter } from "@/components/ui/card";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { MenuItem as MenuItemType } from "../types";
 import CheckoutButton from "@/components/CheckoutButton";
+import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 
 export type CartItem = {
   _id: string;
@@ -20,8 +20,13 @@ export type CartItem = {
 const DetailPage = () => {
   const { restaurantId } = useParams();
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
+  const { createCheckoutSession, isLoading: isCheckoutLoading } =
+    useCreateCheckoutSession();
 
-  const [cartItems, setCartItems] = useState<CartItem[]>();
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   const addToCart = (menuItem: MenuItemType) => {
     setCartItems((prevCartItems) => {
@@ -130,7 +135,11 @@ const DetailPage = () => {
               removeFromCart={removeFromCart}
             />
             <CardFooter>
-              <CheckoutButton />
+              <CheckoutButton
+                disabled={cartItems.length === 0}
+                onCheckout={onCheckout}
+                isLoading={isCheckoutLoading}
+              />
             </CardFooter>
           </Card>
         </div>
